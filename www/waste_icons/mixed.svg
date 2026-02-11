@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      75% { transform: translateX(3px); }
+    }
+    .bin { animation: shake 2s ease-in-out infinite; }
+  </style>
+  <rect class="bin" x="20" y="30" width="60" height="60" fill="#95a5a6" rx="5"/>
+  <path d="M30,40 L70,40 L70,50 L30,50 Z" fill="#fff"/>
+</svg>

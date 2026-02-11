@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    @keyframes shimmer {
+      0%, 100% { fill: #3498db; }
+      50% { fill: #85c1e9; }
+    }
+    .bin { animation: shimmer 3s ease-in-out infinite; }
+  </style>
+  <rect class="bin" x="20" y="30" width="60" height="60" fill="#3498db" rx="5"/>
+  <path d="M30,40 L70,40 L70,50 L30,50 Z" fill="#fff"/>
+  <path d="M40,45 L60,45" stroke="#3498db" stroke-width="2"/>
+</svg>

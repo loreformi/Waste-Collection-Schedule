@@ -1,0 +1,153 @@
+template:
+  - sensor:
+      - name: "Waste Today"
+        unique_id: waste_today
+        state: >
+          {% set upcoming = state_attr('sensor.waste_collection_schedule', 'upcoming') %}
+          {% if upcoming and upcoming | length > 0 %}
+            {% set today = upcoming | selectattr('date', 'eq', now().date() | string) | list %}
+            {% if today %}
+              {{ today[0].types | join(', ') }}
+            {% else %}
+              Nessuna raccolta
+            {% endif %}
+          {% else %}
+            Nessuna raccolta
+          {% endif %}
+        icon: >
+          {% set upcoming = state_attr('sensor.waste_collection_schedule', 'upcoming') %}
+          {% if upcoming and upcoming | length > 0 %}
+            {% set today = upcoming | selectattr('date', 'eq', now().date() | string) | list %}
+            {% if today %}
+              {% set type = today[0].types | first | lower %}
+              {% if 'plastic' in type %}
+                mdi:recycle
+              {% elif 'paper' in type %}
+                mdi:file-document
+              {% elif 'organic' in type %}
+                mdi:food-apple
+              {% elif 'glass' in type %}
+                mdi:glass-fragile
+              {% else %}
+                mdi:delete
+              {% endif %}
+            {% else %}
+              mdi:delete-empty
+            {% endif %}
+          {% else %}
+            mdi:delete-empty
+          {% endif %}
+        picture: >
+          {% set upcoming = state_attr('sensor.waste_collection_schedule', 'upcoming') %}
+          {% if upcoming and upcoming | length > 0 %}
+            {% set today = upcoming | selectattr('date', 'eq', now().date() | string) | list %}
+            {% if today %}
+              {% set type = today[0].types | first | lower %}
+              {% if 'plastic' in type %}
+                /local/waste_icons/plastic.svg
+              {% elif 'paper' in type %}
+                /local/waste_icons/paper.svg
+              {% elif 'organic' in type %}
+                /local/waste_icons/organic.svg
+              {% elif 'glass' in type %}
+                /local/waste_icons/glass.svg
+              {% else %}
+                /local/waste_icons/mixed.svg
+              {% endif %}
+            {% else %}
+                /local/waste_icons/background.svg
+            {% endif %}
+          {% else %}
+            /local/waste_icons/background.svg
+          {% endif %}
+
+      - name: "Waste Tomorrow"
+        unique_id: waste_tomorrow
+        state: >
+          {% set upcoming = state_attr('sensor.waste_collection_schedule', 'upcoming') %}
+          {% if upcoming and upcoming | length > 0 %}
+            {% set tomorrow = (now().date() + timedelta(days=1)) | string %}
+            {% set next = upcoming | selectattr('date', 'eq', tomorrow) | list %}
+            {% if next %}
+              {{ next[0].types | join(', ') }}
+            {% else %}
+              Nessuna raccolta
+            {% endif %}
+          {% else %}
+            Nessuna raccolta
+          {% endif %}
+        icon: mdi:delete-clock
+        picture: >
+          {% set upcoming = state_attr('sensor.waste_collection_schedule', 'upcoming') %}
+          {% if upcoming and upcoming | length > 0 %}
+            {% set tomorrow = (now().date() + timedelta(days=1)) | string %}
+            {% set next = upcoming | selectattr('date', 'eq', tomorrow) | list %}
+            {% if next %}
+              {% set type = next[0].types | first | lower %}
+              {% if 'plastic' in type %}
+                /local/waste_icons/plastic.svg
+              {% elif 'paper' in type %}
+                /local/waste_icons/paper.svg
+              {% elif 'organic' in type %}
+                /local/waste_icons/organic.svg
+              {% elif 'glass' in type %}
+                /local/waste_icons/glass.svg
+              {% else %}
+                /local/waste_icons/mixed.svg
+              {% endif %}
+            {% else %}
+              /local/waste_icons/background.svg
+            {% endif %}
+          {% else %}
+            /local/waste_icons/background.svg
+          {% endif %}
+
+      - name: "Next Waste Collection"
+        unique_id: next_waste_collection
+        state: >
+          {% set upcoming = state_attr('sensor.waste_collection_schedule', 'upcoming') %}
+          {% if upcoming and upcoming | length > 0 %}
+            {% set days = (as_datetime(upcoming[0].date) - now()).days %}
+            {% if days == 0 %}
+              Oggi
+            {% elif days == 1 %}
+              Domani
+            {% else %}
+              Tra {{ days }} giorni
+            {% endif %}
+          {% else %}
+            Nessuna raccolta
+          {% endif %}
+        attributes:
+          waste_type: >
+            {% set upcoming = state_attr('sensor.waste_collection_schedule', 'upcoming') %}
+            {% if upcoming and upcoming | length > 0 %}
+              {{ upcoming[0].types | join(', ') }}
+            {% else %}
+              Nessuno
+            {% endif %}
+          days_to: >
+            {% set upcoming = state_attr('sensor.waste_collection_schedule', 'upcoming') %}
+            {% if upcoming and upcoming | length > 0 %}
+              {{ (as_datetime(upcoming[0].date) - now()).days }}
+            {% else %}
+              -1
+            {% endif %}
+          entity_picture: >
+            {% set upcoming = state_attr('sensor.waste_collection_schedule', 'upcoming') %}
+            {% if upcoming and upcoming | length > 0 %}
+              {% set type = upcoming[0].types | first | lower %}
+              {% if 'plastic' in type %}
+                /local/waste_icons/plastic.svg
+              {% elif 'paper' in type %}
+                /local/waste_icons/paper.svg
+              {% elif 'organic' in type %}
+                /local/waste_icons/organic.svg
+              {% elif 'glass' in type %}
+                /local/waste_icons/glass.svg
+              {% else %}
+                /local/waste_icons/mixed.svg
+              {% endif %}
+            {% else %}
+              /local/waste_icons/background.svg
+            {% endif %}

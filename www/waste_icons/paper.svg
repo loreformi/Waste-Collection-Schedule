@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .bin { animation: pulse 3s ease-in-out infinite; }
+  </style>
+  <rect class="bin" x="20" y="30" width="60" height="60" fill="#f39c12" rx="5"/>
+  <path d="M30,40 L70,40 L70,50 L30,50 Z" fill="#fff"/>
+  <path d="M35,45 L65,45" stroke="#f39c12" stroke-width="2"/>
+</svg>
